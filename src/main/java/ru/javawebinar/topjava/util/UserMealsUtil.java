@@ -49,7 +49,18 @@ public class UserMealsUtil {
     }
 
     public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
-        // TODO Implement by streams
-        return null;
+
+        //получим коллекцию еды
+        Map<LocalDate, Integer> mapСalories = meals.stream()
+                .collect(
+                        Collectors.groupingBy(UserMeal -> UserMeal.getDateTime().toLocalDate(),//группировка еды по дате и времени
+                                Collectors.summingInt(UserMeal::getCalories))//подсчитаем сумму каллорий
+                );
+
+        return meals.stream()
+                .filter(UserMeal -> TimeUtil.isBetweenHalfOpen(UserMeal.getDateTime().toLocalTime(), startTime, endTime))//выбираем записи между startTime, endTime
+                .map(UserMeal -> new UserMealWithExcess(UserMeal.getDateTime(), UserMeal.getDescription(), UserMeal.getCalories(),
+                        mapСalories.get(UserMeal.getDateTime().toLocalDate()) > caloriesPerDay))
+                .collect(Collectors.toList());// преобразуем набор в потоке в список
     }
 }

@@ -35,16 +35,16 @@ public class UserMealsUtil {
             mapCalories.put(mealDate, mapCalories.getOrDefault(mealDate, 0) + meal.getCalories());
         }
 
-        List<UserMealWithExcess> list = new ArrayList<>();
+        List<UserMealWithExcess> resultList = new ArrayList<>();
         for (UserMeal meal : meals) {
             LocalDateTime dateTime = meal.getDateTime();
             if (TimeUtil.isBetweenHalfOpen(dateTime.toLocalTime(), startTime, endTime)) {
-                list.add(new UserMealWithExcess(dateTime, meal.getDescription(), meal.getCalories(),
+                resultList.add(new UserMealWithExcess(dateTime, meal.getDescription(), meal.getCalories(),
                         mapCalories.get(dateTime.toLocalDate()) > caloriesPerDay));
             }
         }
 
-        return list;
+        return resultList;
     }
 
     public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {

@@ -1,3 +1,4 @@
+<%@ page import="ru.javawebinar.topjava.util.TimeUtil" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html lang="en">
@@ -32,12 +33,11 @@
         <td></td>
     </tr>
     </thead>
-    <jsp:useBean id="dateTimeFormatter" scope="request" type="java.time.format.DateTimeFormatter"/>
     <jsp:useBean id="meals" scope="request" type="java.util.List<ru.javawebinar.topjava.model.MealTo>"/>
     <c:forEach var="mealTo" items="${meals}">
         <jsp:useBean id="mealTo" type="ru.javawebinar.topjava.model.MealTo" />
         <tr style="color: ${mealTo.excess ? "red" : "green"}">
-            <td>${dateTimeFormatter.format(mealTo.dateTime)}</td>
+            <td><%=TimeUtil.toString(mealTo.getDateTime())%></td>
             <td>${mealTo.description}</td>
             <td>${mealTo.calories}</td>
             <td><a href="meals?action=update&id=${mealTo.id}">Update</a></td>

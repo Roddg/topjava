@@ -13,8 +13,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MealsUtil {
-    private static final int DEFAULT_CALORIES_PER_DAY = 2000;
-
     public static List<Meal> meals = Arrays.asList(
             new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500),
             new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000),
@@ -44,6 +42,6 @@ public class MealsUtil {
     }
 
     public static List<MealTo> getMealToList(List<Meal> meals) {
-        return filteredByStreams(meals, LocalTime.MIN, LocalTime.MAX, DEFAULT_CALORIES_PER_DAY);
+        return filteredByStreams(meals, LocalTime.MIN, LocalTime.MAX, 2000);
     }
 }

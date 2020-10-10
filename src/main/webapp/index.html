@@ -10,5 +10,14 @@
     <li><a href="users">Users</a></li>
     <li><a href="meals">Meals</a></li>
 </ul>
+<form action="users" method="post">
+    <input type="hidden" name="action" value="auth">
+    <label>Login as</label>
+    <select name="selectRole">
+        <option value="1">Admin</option>
+        <option value="2">User</option>
+    </select>
+    <button type="submit">Choose</button>
+</form>
 </body>
 </html>

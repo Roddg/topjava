@@ -20,13 +20,11 @@ public class UserServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String action = request.getParameter("action");
-
-        if (action != null && action.equalsIgnoreCase("auth")) {
-            SecurityUtil.setAuthUserId(Integer.parseInt(request.getParameter("selectRole")));
-            log.info("Auth as {}", SecurityUtil.authUserId());
-            response.sendRedirect("meals");
-        }
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        int userId = Integer.parseInt(request.getParameter("userId"));
+        log.info("User's id={}", userId);
+        SecurityUtil.setAuthUserId(userId);
+        response.sendRedirect("meals");
     }
 }

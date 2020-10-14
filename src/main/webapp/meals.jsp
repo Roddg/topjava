@@ -19,7 +19,6 @@
 <section>
     <h3><a href="index.html">Home</a></h3>
     <hr>
-    <hr/>
     <h2>Meals</h2>
     <form method="get" action="meals">
         <input type="hidden" name="action" value="filteredMeal">

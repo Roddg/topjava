@@ -11,7 +11,6 @@ public class SecurityUtil {
 
     public static int setAuthUserId(int userId) {
         authUserId = userId;
-
         return authUserId;
     }
 

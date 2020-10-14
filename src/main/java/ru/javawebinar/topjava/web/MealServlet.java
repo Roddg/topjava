@@ -19,6 +19,9 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
+import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalDate;
+import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalTime;
+
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
 
@@ -34,7 +37,6 @@ public class MealServlet extends HttpServlet {
 
     @Override
     public void destroy() {
-        super.destroy();
         appContext.close();
     }
 
@@ -78,16 +80,10 @@ public class MealServlet extends HttpServlet {
                 break;
             case "filteredMeal":
                 log.info("Filter meals with Date/Time filter");
-
-                LocalDate startDate = request.getParameter("startDate").isEmpty() ?
-                        null : LocalDate.parse(request.getParameter("startDate"));
-                LocalDate endDate = request.getParameter("endDate").isEmpty() ?
-                        null : LocalDate.parse(request.getParameter("endDate"));
-                LocalTime startTime = request.getParameter("startTime").isEmpty() ?
-                        null : LocalTime.parse(request.getParameter("startTime"));
-                LocalTime endTime = request.getParameter("endTime").isEmpty() ?
-                        null : LocalTime.parse(request.getParameter("endTime"));
-
+                LocalDate startDate = parseLocalDate(request.getParameter("startDate"));
+                LocalDate endDate = parseLocalDate(request.getParameter("endDate"));
+                LocalTime startTime = parseLocalTime(request.getParameter("startTime"));
+                LocalTime endTime = parseLocalTime(request.getParameter("endTime"));
                 request.setAttribute("meals", controller.getAllFiltered(startDate, endDate, startTime, endTime));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;

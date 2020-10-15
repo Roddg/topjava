@@ -31,7 +31,7 @@ public class InMemoryMealRepository implements MealRepository {
     public Meal save(int userId, Meal meal) {
         log.info("save {} for {}", meal, userId);
 
-        Map<Integer, Meal> currentUserMeals = repository.computeIfAbsent(userId, x->new HashMap<Integer, Meal>());
+        Map<Integer, Meal> currentUserMeals = repository.computeIfAbsent(userId, HashMap::new);
 
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
@@ -65,7 +65,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getAllFilteredWithDate(int userId, LocalDate startDate, LocalDate endDate) {
-        log.info("getAll filtered by date and time");
+        log.info("getAll filtered by date");
         return getAllFiltered(userId, meal ->
                 DateTimeUtil.isBetweenHalfOpen(meal.getDate(), startDate, endDate));
     }

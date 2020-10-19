@@ -10,13 +10,11 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.Month;
 
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.MealTestData.*;
 
@@ -35,12 +33,9 @@ public class MealServiceTest {
     @Autowired
     private MealService service;
 
-    @Autowired
-    private MealRepository repository;
-
     @Test
     public void get() {
-        assertMatch(service.get(MEAL_ID, USER_ID), MEAL_1_1);
+        assertMatch(service.get(MEAL_ID, USER_ID), MEAL11);
     }
 
     @Test
@@ -56,7 +51,7 @@ public class MealServiceTest {
     @Test
     public void delete() {
         service.delete(MEAL_ID, USER_ID);
-        assertNull(repository.get(MEAL_ID, USER_ID));
+        assertThrows(NotFoundException.class, () -> service.delete(MEAL_ID, USER_ID));
     }
 
     @Test
@@ -75,33 +70,29 @@ public class MealServiceTest {
                 LocalDate.of(2020, Month.JANUARY, 30),
                 LocalDate.of(2020, Month.JANUARY, 30),
                 USER_ID
-        ), MEAL_3_1, MEAL_2_1, MEAL_1_1);
+        ), MEAL31, MEAL21, MEAL11);
     }
 
     @Test
-    public void getBetweenInclusiveWithAnotherUser() {
-        assertMatch(service.getBetweenInclusive(
-                LocalDate.of(2020, Month.JANUARY, 30),
-                LocalDate.of(2020, Month.JANUARY, 30),
-                ANOTHER_USER_ID
-        ), MEAL_3_2, MEAL_2_2, MEAL_1_2);
+    public void getBetweenDatesNullDates() {
+        assertMatch(service.getBetweenInclusive(null, null, USER_ID), USER_MEALS);
     }
 
     @Test
     public void getAll() {
-        assertMatch(service.getAll(USER_ID), MEAL_7_1, MEAL_6_1, MEAL_5_1, MEAL_4_1, MEAL_3_1, MEAL_2_1, MEAL_1_1);
+        assertMatch(service.getAll(USER_ID), MEAL71, MEAL61, MEAL51, MEAL41, MEAL31, MEAL21, MEAL11);
     }
 
     @Test
-    public void getAllWithAnotherUser() {
-        assertMatch(service.getAll(ANOTHER_USER_ID), MEAL_6_2, MEAL_5_2, MEAL_4_2, MEAL_3_2, MEAL_2_2, MEAL_1_2);
-    }
-
-    @Test
-    public void update() {
+    public void update() throws Exception {
         Meal updated = getUpdated();
         service.update(updated, USER_ID);
         assertMatch(service.get(MEAL_ID, USER_ID), updated);
+    }
+
+    @Test
+    public void updateNotFound() {
+        assertThrows(NotFoundException.class, () -> service.update(MEAL11, USER_ID));
     }
 
     @Test
@@ -110,18 +101,17 @@ public class MealServiceTest {
     }
 
     @Test
-    public void create() {
+    public void create() throws Exception {
         Meal newMeal = getNew();
         Meal created = service.create(newMeal, USER_ID);
-        Integer newId = created.getId();
-        newMeal.setId(newId);
-        assertMatch(created, newMeal);
-        assertMatch(service.get(newId, USER_ID), newMeal);
+        newMeal.setId(created.getId());
+        assertMatch(newMeal, created);
+        assertMatch(service.getAll(USER_ID), newMeal, MEAL71, MEAL61, MEAL51, MEAL41, MEAL31, MEAL21, MEAL11);
     }
 
-    @Test
-    public void duplicateDateCreate() {
-        assertThrows(DataAccessException.class, () ->
-                service.create(new Meal(MEAL_1_1.getDateTime(), "test", 500), USER_ID));
+        @Test
+        public void duplicateDateCreate () {
+            assertThrows(DataAccessException.class, () ->
+                    service.create(new Meal(MEAL11.getDateTime(), "test", 500), USER_ID));
+        }
     }
-}

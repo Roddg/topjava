@@ -35,9 +35,6 @@ public class UserServiceTest {
     @Autowired
     private UserService service;
 
-    @Autowired
-    private UserRepository repository;
-
     @Test
     public void create() throws Exception {
         User newUser = getNew();

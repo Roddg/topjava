@@ -9,12 +9,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
 
 public class MealTestData {
-    public static final int NOT_FOUND = 10;
-    public static final int USER_ID = AbstractBaseEntity.START_SEQ;
-    public static final int ANOTHER_USER_ID = AbstractBaseEntity.START_SEQ + 1;
-    public static final int MEAL_ID = AbstractBaseEntity.START_SEQ + 2;
+    public static final int MEAL_ID = START_SEQ + 2;
     public static final Meal meal11 = new Meal(MEAL_ID, LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500);
     public static final Meal meal21 = new Meal(MEAL_ID + 1, LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000);
     public static final Meal meal31 = new Meal(MEAL_ID + 2, LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500);
@@ -23,7 +21,7 @@ public class MealTestData {
     public static final Meal meal61 = new Meal(MEAL_ID + 5, LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500);
     public static final Meal meal71 = new Meal(MEAL_ID + 6, LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410);
 
-    public static final List<Meal> USER_MEALS = Arrays.asList(meal71, meal61, meal51, meal41,
+    public static final List<Meal> user_meals = Arrays.asList(meal71, meal61, meal51, meal41,
             meal31, meal21, meal11);
 
     public static Meal getNew() {

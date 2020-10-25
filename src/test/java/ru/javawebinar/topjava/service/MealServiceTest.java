@@ -3,10 +3,7 @@ package ru.javawebinar.topjava.service;
 import org.junit.AfterClass;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.rules.Stopwatch;
-import org.junit.rules.TestRule;
-import org.junit.rules.TestWatcher;
+import org.junit.rules.*;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -22,8 +19,8 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertThrows;
@@ -38,16 +35,20 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
-    private static final Logger log = LoggerFactory.getLogger(MealServiceTest.class);
-    private static final List<String> result = new ArrayList<>();
+    private static final Logger logger = LoggerFactory.getLogger(MealServiceTest.class);
+    private static final Map<String, Long> result = new HashMap<>();
+
+    @Rule
+    public final TestName testName = new TestName();
 
     @Rule
     public final Stopwatch stopwatch = new Stopwatch() {
         @Override
         protected void finished(long nanos, Description description) {
-            String info = description.getMethodName() + " - " + TimeUnit.NANOSECONDS.toMillis(nanos) + " ms";
-            result.add(info);
-            log.info(info);
+            String name = testName.getMethodName();
+            long time = TimeUnit.NANOSECONDS.toMillis(nanos);
+            result.put(name, time);
+            logger.info("\n\nTest time: " + time + "ms");
         }
     };
 
@@ -56,12 +57,17 @@ public class MealServiceTest {
 
     @AfterClass
     public static void end() {
-        log.debug(result.toString());
+        StringBuilder sb = new StringBuilder("\n\n");
+        sb.append(String.format("%-15s   %s\n", "Test name", "Test time"))
+                .append("----------------------------\n");
+        for (Map.Entry<String, Long> pair : result.entrySet()) {
+            sb.append(String.format("%-15s -%5d ms\n", pair.getKey(), pair.getValue()));
+        }
+        logger.info(sb.toString());
     }
 
     @Test
     public void delete() throws Exception {
-        log.warn("Deleting");
         service.delete(MEAL1_ID, USER_ID);
         assertThrows(NotFoundException.class, () -> service.get(MEAL1_ID, USER_ID));
     }

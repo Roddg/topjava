@@ -19,7 +19,7 @@ import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalTime;
 @Controller
 @RequestMapping(value = "/meals")
 public class JspMealController extends AbstractMealController {
-    @GetMapping("/meals")
+    @GetMapping
     public String getAll(HttpServletRequest request, Model model) {
         String action = request.getParameter("action");
         if (action != null && action.equals("filter")) {
@@ -38,14 +38,12 @@ public class JspMealController extends AbstractMealController {
     @GetMapping("/create")
     public String create(Model model) {
         model.addAttribute("meal", new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000));
-        model.addAttribute("isCreate", true);
         return "mealForm";
     }
 
     @GetMapping("/update")
     public String update(HttpServletRequest request, Model model) {
-        model.addAttribute("meal", this.get(getId(request)));
-        model.addAttribute("isCreate", false);
+        model.addAttribute("meal", get(getId(request)));
         return "mealForm";
     }
 

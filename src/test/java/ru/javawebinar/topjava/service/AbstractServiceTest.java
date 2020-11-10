@@ -19,6 +19,7 @@ import ru.javawebinar.topjava.Profiles;
 import ru.javawebinar.topjava.TimingRules;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.util.ValidationUtil.getRootCause;
@@ -29,11 +30,11 @@ import static ru.javawebinar.topjava.util.ValidationUtil.getRootCause;
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 @ActiveProfiles(resolver = ActiveDbProfileResolver.class)
 abstract public class AbstractServiceTest {
-    @Autowired
-    private Environment environment;
-
     @ClassRule
     public static ExternalResource summary = TimingRules.SUMMARY;
+
+    @Autowired
+    private Environment environment;
 
     @Rule
     public Stopwatch stopwatch = TimingRules.STOPWATCH;
@@ -48,7 +49,8 @@ abstract public class AbstractServiceTest {
             }
         });
     }
+
     public boolean isJdbc() {
-        return Arrays.asList(environment.getActiveProfiles()).contains(Profiles.JDBC);
+        return List.of(environment.getActiveProfiles()).contains(Profiles.JDBC);
     }
 }

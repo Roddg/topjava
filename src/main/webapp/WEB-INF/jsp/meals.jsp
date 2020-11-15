@@ -10,7 +10,8 @@
 <br>
 <section>
     <h2><spring:message code="meal.title"/></h2>
-    <form method="get" action="${pageContext.request.contextPath}meals/filter">
+    <form method="get" action="meals">
+        <input type="hidden" name="action" value="filter">
         <dl>
             <dt><spring:message code="meal.filter.date_from"/></dt>
             <dd><label>

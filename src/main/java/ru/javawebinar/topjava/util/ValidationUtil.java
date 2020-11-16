@@ -61,7 +61,7 @@ public class ValidationUtil {
         return result;
     }
 
-    public static <T> void isValid(T entity) {
+    public static <T> void checkValid(T entity) {
         Set<ConstraintViolation<T>> violations = validator.validate(entity);
 
         if (violations.size() > 0) {

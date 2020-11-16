@@ -49,7 +49,7 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     @Transactional
     public User save(User user) {
-        ValidationUtil.isValid(user);
+        ValidationUtil.checkValid(user);
         BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(user);
 
         if (user.isNew()) {
@@ -62,11 +62,11 @@ public class JdbcUserRepository implements UserRepository {
         } else {
             namedParameterJdbcTemplate.update("DELETE FROM user_roles WHERE user_id = :id", parameterSource);
         }
-        batchInsert(user, new ArrayList<>(user.getRoles()));
+        setInsertUser(user, new ArrayList<>(user.getRoles()));
         return user;
     }
 
-    private void batchInsert(User user, List<Role> roles) {
+    private void setInsertUser(User user, List<Role> roles) {
         this.jdbcTemplate.batchUpdate(
                 "INSERT INTO user_roles (user_id, role) VALUES (?, ?)",
                 new BatchPreparedStatementSetter() {

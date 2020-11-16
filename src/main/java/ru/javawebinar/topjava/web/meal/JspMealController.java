@@ -23,17 +23,18 @@ import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalTime;
 public class JspMealController extends AbstractMealController {
 
     @GetMapping
-    public String getMeals(HttpServletRequest request, Model model) {
+    public String getAll(Model model) {
+        model.addAttribute("meals", getAll());
+        return "meals";
+    }
+
+    @GetMapping("/filter")
+    public String getBetween(HttpServletRequest request, Model model) {
         LocalDate startDate = parseLocalDate(request.getParameter("startDate"));
         LocalDate endDate = parseLocalDate(request.getParameter("endDate"));
         LocalTime startTime = parseLocalTime(request.getParameter("startTime"));
         LocalTime endTime = parseLocalTime(request.getParameter("endTime"));
-
-        if (startDate == null && endDate == null && startTime == null && endTime == null) {
-            model.addAttribute("meals", getAll());
-        } else {
-            model.addAttribute("meals", getBetween(startDate, startTime, endDate, endTime));
-        }
+        model.addAttribute("meals", getBetween(startDate, startTime, endDate, endTime));
         return "meals";
     }
 
@@ -63,7 +64,7 @@ public class JspMealController extends AbstractMealController {
                 Integer.parseInt(request.getParameter("calories"))
         );
 
-        if (StringUtils.isEmpty(request.getParameter("id"))) {
+        if (!StringUtils.hasText(request.getParameter("id"))) {
             create(meal);
         } else {
             update(meal, getId(request));

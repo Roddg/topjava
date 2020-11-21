@@ -1,0 +1,35 @@
+PUT http://localhost:8080/topjava/rest/admin/users/100000
+Content-Type: application/json
+
+{
+  "name": "UserUpdated",
+  "email": "user@yandex.ru",
+  "password": "passwordNew",
+  "roles": ["USER"]
+}
+
+###
+POST http://localhost:8080/topjava/rest/admin/users
+Content-Type: application/json
+
+{
+  "name": "New2",
+  "email": "new2@yandex.ru",
+  "password": "passwordNew",
+  "roles": [
+    "USER"
+  ]
+}
+
+
+###
+GET http://localhost:8080/topjava/rest/admin/users
+Accept: application/json
+
+###
+GET http://localhost:8080/topjava/rest/admin/users/100000
+Accept: application/json
+
+###
+
+

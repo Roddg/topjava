@@ -13,7 +13,7 @@ public class MealTo {
 
     private boolean excess;
 
-    public MealTo(){
+    public MealTo() {
     }
 
     public MealTo(Integer id, LocalDateTime dateTime, String description, int calories, boolean excess) {

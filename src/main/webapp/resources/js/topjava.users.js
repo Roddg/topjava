@@ -1,4 +1,4 @@
-var ctx;
+let ctx;
 
 // $(document).ready(function () {
 $(function () {

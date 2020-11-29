@@ -1,19 +1,14 @@
-let form;
+var context, form;
 
-function makeEditable() {
+function makeEditable(ctx) {
+    context = ctx;
     form = $('#detailsForm');
-    $(".delete").click(function () {
-        if (confirm('Are you sure?')) {
-            deleteRow($(this).attr("id"));
-        }
-    });
-
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
         failNoty(jqXHR);
     });
 
     // solve problem with cache in IE: https://stackoverflow.com/a/4303862/548473
-    $.ajaxSetup({cache: false});
+    $.ajaxSetup({cache: true});
 }
 
 function add() {
@@ -22,29 +17,29 @@ function add() {
 }
 
 function deleteRow(id) {
-    $.ajax({
-        url: ctx.ajaxUrl + id,
-        type: "DELETE"
-    }).done(function () {
-        updateTable();
-        successNoty("Deleted");
-    });
+    if (confirm('Are you sure?')) {
+        $.ajax({
+            url: context.ajaxUrl + id,
+            type: "DELETE"
+        }).done(function () {
+            context.updateTable();
+            successNoty("Deleted");
+        });
+    }
 }
 
-function updateTable() {
-    $.get(ctx.ajaxUrl, function (data) {
-        ctx.datatableApi.clear().rows.add(data).draw();
-    });
+function updateTableByData(data) {
+    context.datatableApi.clear().rows.add(data).draw();
 }
 
 function save() {
     $.ajax({
         type: "POST",
-        url: ctx.ajaxUrl,
+        url: context.ajaxUrl,
         data: form.serialize()
     }).done(function () {
         $("#editRow").modal("hide");
-        updateTable();
+        context.updateTable();
         successNoty("Saved");
     });
 }

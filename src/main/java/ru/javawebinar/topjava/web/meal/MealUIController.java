@@ -16,7 +16,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(value = "/meals")
+@RequestMapping(value = "/ajax/meals")
 public class MealUIController extends AbstractMealController {
 
     @Override
@@ -38,7 +38,6 @@ public class MealUIController extends AbstractMealController {
         Meal meal = new Meal(LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories")));
-
         if (meal.isNew()) {
             super.create(meal);
         }

@@ -1,6 +1,6 @@
 $(function () {
     makeEditable({
-            ajaxUrl: "admin/users/",
+            ajaxUrl: "ajax/admin/users/",
             datatableApi: $("#datatable").DataTable({
                 "paging": false,
                 "info": true,
@@ -42,3 +42,16 @@ $(function () {
         }
     );
 });
+
+function enable(checkbox, id) {
+    const enabled = checkbox.is(":checked");
+
+    $.ajax({
+        url: "ajax/admin/users/" + id,
+        type: "POST",
+        data: "enabled=" + enabled
+    }).done(function () {
+        checkbox.closest("tr").attr("data-userEnabled", enabled);
+        successNoty("Updated")
+    });
+}

@@ -15,6 +15,16 @@ dd {
     vertical-align: top;
 }
 
+.btn-danger {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+tr[data-userEnabled="false"] {
+    opacity: 0.3;
+}
+
 tr[data-mealExcess="false"] {
     color: green;
 }

@@ -41,3 +41,8 @@ function updateFilteredTable() {
         data: $("#filter").serialize()
     }).done(updateTableByData);
 }
+
+function clearFilter() {
+    $("#filter")[0].reset();
+    $.get("ajax/meals/", updateTableByData);
+}

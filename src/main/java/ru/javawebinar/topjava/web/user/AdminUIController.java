@@ -9,7 +9,7 @@ import ru.javawebinar.topjava.model.User;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/users")
+@RequestMapping("ajax/admin/users/")
 public class AdminUIController extends AbstractUserController {
 
     @Override
@@ -31,5 +31,12 @@ public class AdminUIController extends AbstractUserController {
                        @RequestParam String email,
                        @RequestParam String password) {
         super.create(new User(null, name, email, password, Role.USER));
+    }
+
+    @Override
+    @PostMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void setEnabled(@PathVariable int id, @RequestParam Boolean enabled) {
+        super.setEnabled(id, enabled);
     }
 }

@@ -60,7 +60,6 @@ class AdminRestControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());
-
         USER_MATCHER.assertMatch(userService.get(USER_ID), updated);
     }
 
@@ -71,7 +70,6 @@ class AdminRestControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newUser)))
                 .andExpect(status().isCreated());
-
         User created = readFromJson(action, User.class);
         int newId = created.id();
         newUser.setId(newId);
@@ -92,7 +90,6 @@ class AdminRestControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.post(REST_URL + USER_ID)
                 .param("enabled", "false"))
                 .andExpect(status().isNoContent());
-
         assertFalse(userService.get(USER_ID).isEnabled());
     }
 

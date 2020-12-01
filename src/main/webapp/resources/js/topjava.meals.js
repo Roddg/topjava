@@ -1,5 +1,9 @@
+let ctx;
+
+// $(document).ready(function () {
 $(function () {
-    makeEditable({
+    // https://stackoverflow.com/a/5064235/548473
+    ctx = {
         ajaxUrl: "ajax/meals/",
         datatableApi: $("#datatable").DataTable({
             "paging": false,
@@ -26,12 +30,13 @@ $(function () {
             "order": [
                 [
                     0,
-                    "desc"
+                    "asc"
                 ]
             ]
         }),
         updateTable: updateFilteredTable
-    });
+    };
+    makeEditable();
 });
 
 function updateFilteredTable() {

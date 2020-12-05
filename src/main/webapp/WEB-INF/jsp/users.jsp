@@ -79,6 +79,6 @@
 <jsp:include page="fragments/footer.jsp"/>
 </body>
 <jsp:include page="fragments/i18n.jsp">
-    <jsp:param name="type" value="meal"/>
+    <jsp:param name="type" value="user"/>
 </jsp:include>
 </html>
